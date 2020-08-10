@@ -12,5 +12,6 @@ namespace StunasMobile.Data.Repositories
         Task<Mobile> Add(Mobile entity);
         Task<Mobile> Update(Mobile entity);
         Task<Mobile> Delete(Mobile entity);
+        Task<Historique> CompareMobilesRecords(Mobile MobileToUpdate, Mobile mobileUpdated);
     }
 }

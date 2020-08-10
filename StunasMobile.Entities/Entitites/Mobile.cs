@@ -1,9 +1,17 @@
-﻿#nullable disable
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Microsoft.VisualBasic;
+
+#nullable disable
 
 namespace StunasMobile.Entities.Entitites
 {
     public partial class Mobile
     {
+        public Mobile()
+        {
+            Historiques = new Collection<Historique>();
+        }
         public int Id { get; set; }
         public string Codeclient { get; set; }
         public string Sociéte { get; set; }
@@ -15,5 +23,7 @@ namespace StunasMobile.Entities.Entitites
         public string Data { get; set; }
         public string Handset { get; set; }
         public string Prixhandset { get; set; }
+
+        public ICollection<Historique> Historiques { get; set; }
     }
 }

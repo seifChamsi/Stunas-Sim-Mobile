@@ -10,6 +10,7 @@ namespace StunasMobile.api.Mapping
         {
             CreateMap<Mobile, MobileModelView>().ReverseMap();
             CreateMap<Mobile, UpdateMobileModelView>().ReverseMap();
+            CreateMap<User,SignupModelView>().ReverseMap();
         }
     }
 }

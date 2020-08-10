@@ -46,6 +46,7 @@ namespace StunasMobile.api
             });
 
             services.AddAutoMapper(typeof(Startup));
+            services.AddJWTAuthentification(Configuration);
             // Swagger
             services.AddSwaggerSecurity();
             
@@ -75,7 +76,7 @@ namespace StunasMobile.api
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

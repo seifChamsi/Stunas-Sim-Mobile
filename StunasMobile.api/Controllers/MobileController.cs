@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StunasMobile.Core;
 using StunasMobile.Core.Utils;
@@ -18,14 +19,16 @@ namespace StunasMobile.api.Controllers
     {
         private readonly IMobileRepository _mobileRepo;
         private readonly IMapper _mapper;
+        private readonly StunasDBContext _context;
 
 
-        public MobileController(IMobileRepository MobileRepo,IMapper mapper)
+        public MobileController(IMobileRepository MobileRepo,IMapper mapper,StunasDBContext context)
         {
             _mobileRepo = MobileRepo;
             _mapper = mapper;
+            _context = context;
         }
-        [HttpGet("GetAllByPaginate")]
+        [HttpGet("GetAllByPaginate"),Authorize]
         public async Task<Object> GetAll([FromQuery]PaginationParams param)
         {
             var allMobilesInfo = await _mobileRepo.GetAllWithPagination(param);
@@ -36,7 +39,7 @@ namespace StunasMobile.api.Controllers
             };
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet("GetAll"),Authorize]
         public async Task<Object> GetAllMobiles()
         {
             return new
@@ -46,7 +49,7 @@ namespace StunasMobile.api.Controllers
             };
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}"),Authorize]
         public async Task<Object> GetById(int id)
         {
             Mobile mob = await _mobileRepo.GetById(id);
@@ -61,7 +64,7 @@ namespace StunasMobile.api.Controllers
             };
         }
 
-        [HttpPost("addNewMobile")]
+        [HttpPost("addNewMobile"),Authorize]
         public async Task<Object> AddMobile(MobileModelView MobileFromView)
         {
             try
@@ -79,7 +82,7 @@ namespace StunasMobile.api.Controllers
             
         }
 
-        [HttpPut("changeData/{id}")]
+        [HttpPut("changeData/{id}"),Authorize]
         public async Task<Object> UpdateMobile(int id, UpdateMobileModelView MobileFromView)
         {
             try
@@ -106,6 +109,10 @@ namespace StunasMobile.api.Controllers
                     Prixhandset = MobileFromView.Prixhandset,
                     Site = MobileFromView.Site
                 };
+                
+                Historique HistoriqueObject = await _mobileRepo.CompareMobilesRecords(mobileToUpdate,UpdatedMobile);
+                
+                UpdatedMobile.Historiques.Add(HistoriqueObject);
                 await _mobileRepo.Update(UpdatedMobile);
 
                 
@@ -119,7 +126,7 @@ namespace StunasMobile.api.Controllers
 
         }
 
-        [HttpDelete("DeleteMobile/{id}")]
+        [HttpDelete("DeleteMobile/{id}"),Authorize]
         public async Task<Object> DeleteMobile(int id)
         {
             Mobile mobileToDelte = await _mobileRepo.GetById(id);

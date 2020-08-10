@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using StunasMobile.Entities.Entitites;
 
 #nullable disable
@@ -11,14 +15,20 @@ namespace StunasMobile.Data.DbContext
         {
         }
 
-        public StunasDBContext(DbContextOptions<StunasDBContext> options)
-            : base(options)
+        public StunasDBContext(DbContextOptions<StunasDBContext> options): base(options)
         {
         }
 
         public virtual DbSet<Mobile> Mobiles { get; set; }
+        public virtual DbSet<Historique> Historique{ get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
-     
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseNpgsql("Host=localhost;Database=StunasDB;Username=postgres;Password=MyDbPassword");
+            base.OnConfiguring(optionsBuilder);
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -67,8 +77,14 @@ namespace StunasMobile.Data.DbContext
                     .IsRequired()
                     .HasMaxLength(50)
                     .HasColumnName("sociéte");
+                
+                
             });
 
+            modelBuilder.Entity<Mobile>()
+                .HasMany(h => h.Historiques)
+                .WithOne(m => m.Mobile);
+            
             OnModelCreatingPartial(modelBuilder);
         }
 
@@ -76,3 +92,6 @@ namespace StunasMobile.Data.DbContext
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
+
+
+       
