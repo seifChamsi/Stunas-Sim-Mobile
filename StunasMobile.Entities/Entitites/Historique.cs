@@ -11,7 +11,7 @@ namespace StunasMobile.Entities.Entitites
         public List<string> NewValues { get; set; }
         public DateTime CreatedAt { get; set; }
         //Foreign Key
-        public int RecordId { get; set; }
+        public int MobileId { get; set; }
         public Mobile Mobile { get; set; }
     }
 }

@@ -73,10 +73,10 @@ namespace StunasMobile.Data.DbContext
                     .HasMaxLength(50)
                     .HasColumnName("site");
 
-                entity.Property(e => e.Sociéte)
+                entity.Property(e => e.Societe)
                     .IsRequired()
                     .HasMaxLength(50)
-                    .HasColumnName("sociéte");
+                    .HasColumnName("societe");
                 
                 
             });

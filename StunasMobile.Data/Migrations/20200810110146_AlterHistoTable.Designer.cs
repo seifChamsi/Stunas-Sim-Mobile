@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using StunasMobile.Data.DbContext;
@@ -10,9 +11,10 @@ using StunasMobile.Data.DbContext;
 namespace StunasMobile.Data.Migrations
 {
     [DbContext(typeof(StunasDBContext))]
-    partial class StunasDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200810110146_AlterHistoTable")]
+    partial class AlterHistoTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,11 +104,11 @@ namespace StunasMobile.Data.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("site");
 
-                    b.Property<string>("Societe")
+                    b.Property<string>("Sociéte")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
-                        .HasColumnName("societe");
+                        .HasColumnName("sociéte");
 
                     b.HasKey("Id");
 
@@ -121,9 +123,6 @@ namespace StunasMobile.Data.Migrations
                         .UseIdentityByDefaultColumn();
 
                     b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Role")
                         .HasColumnType("text");
 
                     b.Property<string>("password")

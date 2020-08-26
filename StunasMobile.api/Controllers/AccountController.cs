@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -14,6 +15,7 @@ using StunasMobile.Entities.Entitites;
 
 namespace StunasMobile.api.Controllers
 {
+    [EnableCors("myPolicy")]
     [ApiController]
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
@@ -48,6 +50,7 @@ namespace StunasMobile.api.Controllers
                 {
                     new Claim(ClaimTypes.Name, dbUser.UserId.ToString()), 
                     new Claim(ClaimTypes.Name, dbUser.username.ToString()),
+			new Claim(ClaimTypes.Name, dbUser.Role.ToString()),
                 };
 
                 var takeOptions = new SecurityTokenDescriptor {
@@ -68,7 +71,8 @@ namespace StunasMobile.api.Controllers
                     succuess = true,
                     Token = tokenString,
                     userId = claimsList[0].Value,
-                    username = claimsList[1].Value
+                    username = claimsList[1].Value,
+			role = claimsList[2].Value
                   
                 });
             }

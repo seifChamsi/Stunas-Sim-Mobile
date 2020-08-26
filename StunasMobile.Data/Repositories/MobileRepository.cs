@@ -35,7 +35,7 @@ namespace StunasMobile.Data.Repositories
 
         public async Task<Mobile> GetById(int id)
         {
-            return  _context.Mobiles.AsNoTracking().FirstOrDefault(Mb => Mb.Id == id);
+            return  _context.Mobiles.AsNoTracking().Include(m=>m.Historiques).FirstOrDefault(Mb => Mb.Id == id);
         }
 
         public async Task<Mobile> Add(Mobile entity)
@@ -110,11 +110,11 @@ namespace StunasMobile.Data.Repositories
                 newValuesList.Add(mobileUpdated.Nom);
             }
             
-            if (MobileToUpdate.Sociéte != mobileUpdated.Sociéte)
+            if (MobileToUpdate.Societe != mobileUpdated.Societe)
             {
-                changedColumnsList.Add("Societé");
-                oldValuesList.Add(MobileToUpdate.Sociéte);
-                newValuesList.Add(mobileUpdated.Sociéte);
+                changedColumnsList.Add("Societe");
+                oldValuesList.Add(MobileToUpdate.Societe);
+                newValuesList.Add(mobileUpdated.Societe);
             }
             
             if (MobileToUpdate.Site != mobileUpdated.Site)

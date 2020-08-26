@@ -49,6 +49,13 @@ namespace StunasMobile.api
             services.AddJWTAuthentification(Configuration);
             // Swagger
             services.AddSwaggerSecurity();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("myPolicy",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyHeader().AllowAnyMethod());
+            });
             
         }
 
@@ -76,6 +83,8 @@ namespace StunasMobile.api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors("myPolicy");
+
             app.UseAuthentication();
             app.UseAuthorization();
 

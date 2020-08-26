@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using StunasMobile.Core;
 using StunasMobile.Core.Utils;
@@ -13,6 +14,7 @@ using StunasMobile.Entities.Entitites;
 
 namespace StunasMobile.api.Controllers
 {
+    [EnableCors("myPolicy")]
     [ApiController]
     [Route("api/[controller]")]
     public class MobileController : ControllerBase
@@ -28,7 +30,7 @@ namespace StunasMobile.api.Controllers
             _mapper = mapper;
             _context = context;
         }
-        [HttpGet("GetAllByPaginate"),Authorize]
+        [HttpGet("GetAllByPaginate")]
         public async Task<Object> GetAll([FromQuery]PaginationParams param)
         {
             var allMobilesInfo = await _mobileRepo.GetAllWithPagination(param);
@@ -42,11 +44,7 @@ namespace StunasMobile.api.Controllers
         [HttpGet("GetAll"),Authorize]
         public async Task<Object> GetAllMobiles()
         {
-            return new
-            {
-                succuess = true,
-                data = await _mobileRepo.GetAll()
-            };
+            return await _mobileRepo.GetAll();
         }
 
         [HttpGet("{id}"),Authorize]
@@ -87,7 +85,6 @@ namespace StunasMobile.api.Controllers
         {
             try
             {
-
                 Mobile mobileToUpdate = await _mobileRepo.GetById(id);
                 
                 if (mobileToUpdate == null)
@@ -102,7 +99,7 @@ namespace StunasMobile.api.Controllers
                     Numero = mobileToUpdate.Numero,
                     Data = MobileFromView.Data,
                     Forfait = MobileFromView.Forfait,
-                    Sociéte = MobileFromView.Sociéte,
+                    Societe = MobileFromView.Sociéte,
                     Nom = MobileFromView.Nom,
                     Handset = MobileFromView.Handset,
                     Montant = MobileFromView.Montant,
